@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+    <head>
+        <title>test xml convert to json</title>
+        <meta charset="utf-8">
+        <style>
+            .input,.output {
+                width: 300px;
+                height: 400px;
+                font-size: 16px;
+                font-family: Microsoft Yahei, serif;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <textarea placeholder="write you xml here" class="input">
+            <person>
+                <name>april</name>
+                <hobbie>basketball</hobbie>
+                <hobbie>swim</hobbie>
+                <hobbie>code</hobbie>
+            </person>
+        </textarea>
+        <a href="javascript:;" class="btn">convert</a>
+        <textarea placeholder="resule be shown here" class="output"></textarea>
+
+        <script src='./index.js'></script>
+        <script>
+            var div = document.createElement('div');
+            var input = document.querySelector('.input')
+            var output = document.querySelector('.output')
+            var btn = document.querySelector('.btn')
+            var UA = navigator.userAgent.toLowerCase();
+            var ie8 = (function() {
+                var matchs = UA.match(/msie\s*(\d+)\.?/) || []
+                return matchs.length > 1 ? (+matchs[1] === 8) : false;
+            })()
+            function convert() {
+                var str = input.value
+                try {
+
+                    str = str.replace(/\s/g,'')   // simply replace all space
+
+                    if (ie8) {
+                        // You need to handle IE8 innerHTML bug
+                        output.value = 'You need to handle IE8 innerHTML bug first.'
+                        return 
+                    } else {
+                        div.innerHTML = str
+                    }
+
+                    var result = xmlToJson(div)
+                    var result = JSON.stringify(result, null, 4)
+                    output.value = result
+                } catch(e) {
+                    console.log(e)
+                }
+            }
+
+            if ('addEventListener' in btn) {
+                btn.addEventListener('click', convert, false)
+            } else if ('attachEvent' in btn){
+                btn.attachEvent('onclick', convert)
+            } else {
+                btn.onclick = convert;
+            }
+        </script>
+    </body>
+</html>
